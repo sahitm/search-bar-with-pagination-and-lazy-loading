@@ -1,9 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../state/context";
+import Pagination from "./Pagination";
 
 function PostList() {
   const { query } = useContext(Context);
   const [apiData, setApiData] = useState([]);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(2);
 
   console.log(apiData);
 
@@ -21,12 +25,20 @@ function PostList() {
     }
   }, [query]);
 
-  const renderedPosts = apiData.map((post) => (
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = apiData.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+  const renderedPosts = currentPosts.map((post) => (
     <article key={post.id}>
       <div>
-        <div className="bg-gray-300 px-3  lg:px-6 py-4 rounded-tl-3xl rounded-tr-3xl">
+        <div className="bg-gray-400  px-3  lg:px-6 lg:py-4 rounded-tl-3xl rounded-tr-3xl">
           <img
-            className="m-auto"
+            className="m-auto rounded-3xl"
             src={`https://image.tmdb.org/t/p/w185_and_h278_bestv2/${post.poster_path}`}
             alt={`${post.title} movie poster`}
           />
@@ -66,6 +78,11 @@ function PostList() {
                 </div>
               </div>
             </div>
+            <Pagination
+                  postsPerPage={postsPerPage}
+                  totalPosts={apiData.length}
+                  paginate={paginate}
+                />
           </div>
         </div>
       </div>
