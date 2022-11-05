@@ -1,4 +1,5 @@
 import Search from "./components/Search";
+import PostList from "./components/PostList";
 import "./App.css";
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <div className="App">
       <h1 className="text-3xl font-bold underline">Hello world!</h1>
       <Search />
+      <PostList />
     </div>
   );
 }

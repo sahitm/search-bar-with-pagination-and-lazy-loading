@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Context } from "../state/context";
 
 function Search() {
+ 
+  const {query, SetQuery} = useContext(Context);
+
+  console.log(query)
+
   return (
     <>
       <div>
@@ -11,6 +17,7 @@ function Search() {
                 className="text-sm leading-none text-left text-gray-600 px-4 py-3 w-full border rounded border-gray-300  outline-none"
                 type="text"
                 placeholder="Search"
+                onChange={(e) => SetQuery(e.target.value) }
               />
               <svg
                 className="absolute right-3 z-10 cursor-pointer"
