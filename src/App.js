@@ -1,10 +1,9 @@
 import React from "react";
 import Search from "./components/Search";
-import PostList from "./components/PostList";
 import { Routes, Route, Link } from "react-router-dom";
-import "./App.css";
 import LazyLoading from "./components/LazyLoading";
-const LazyResults = React.lazy(() => import("./components/LazyLoading"));
+import Pagination from "./components/Pagination";
+import "./App.css";
 
 function App() {
   return (
@@ -13,25 +12,17 @@ function App() {
       <nav className="">
         <ul className="flex justify-evenly">
           <li className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
-            <Link to="/">Pagination Search</Link>
+            <Link to="/">Lazy Loading Search</Link>
           </li>
           <li className="underline text-blue-600 hover:text-blue-800 visited:text-purple-600">
-            <Link to="/lazyloading">Lazy Loading Search</Link>
+            <Link to="/pagination">Pagination Search</Link>
           </li>
         </ul>
       </nav>
       <Search />
       <Routes>
-        <Route exact path="/" element={<PostList />} />
-        <Route
-          exact
-          path="/lazyloading"
-          element={
-            <React.Suspense fallback="Loading...">
-              <LazyResults />
-            </React.Suspense>
-          }
-        />
+        <Route exact path="/" element={<LazyLoading />} />
+        <Route exact path="/pagination" element={<Pagination />} />
       </Routes>
     </div>
   );

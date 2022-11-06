@@ -1,28 +1,9 @@
-import React from "react";
+import React from 'react'
 
-const Pagination = ({ postsPerPage, totalPosts, paginate }) => {
-  const pageNumbers = [];
-
-  for (let i = 1; i <= Math.ceil(totalPosts / postsPerPage); i++) {
-    pageNumbers.push(i);
-  }
-
+function Pagination() {
   return (
-    <nav>
-      <ul className=" pagination flex items-center justify-center py-10 lg:px-0 sm:px-6 px-4">
-        {pageNumbers.map((number) => (
-          <li
-            key={number}
-            className="page-item text-sm font-medium leading-none cursor-pointer text-indigo-700 border-t border-transparent hover:border-indigo-400 pt-3 mr-4 px-2"
-          >
-            <a onClick={() => paginate(number)} href="!#" className="page-link">
-              {number}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </nav>
-  );
-};
+    <div>Pagination</div>
+  )
+}
 
-export default Pagination;
+export default Pagination
