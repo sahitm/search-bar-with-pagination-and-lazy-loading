@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { Context } from "../state/context";
+import Pagination from "./Pagination";
 
-function LazyLoading() {
+function PostList() {
   const { query } = useContext(Context);
+  const [apiData, setApiData] = useState([]);
 
-  const [hasMore, sethasMore] = useState(true);
-  const [items , setItems] = useState([])
-  const [page, setpage] = useState(2);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(2);
+
 
   useEffect(() => {
     const url = `https://api.themoviedb.org/3/search/movie?api_key=5dcf7f28a88be0edc01bbbde06f024ab&language=en-US&query=${query}&page=1`;
@@ -16,34 +17,23 @@ function LazyLoading() {
       const fetchData = async () => {
         const res = await fetch(url);
         const data = await res.json();
-        setItems(data.results);
+        setApiData(data.results);
       };
 
       fetchData();
     }
   }, [query]);
 
-  const fetchMovies = async () => {
-    const res = await fetch(
-      `https://api.themoviedb.org/3/search/movie?api_key=5dcf7f28a88be0edc01bbbde06f024ab&language=en-US&query=${query}&page=${page}`
-      
-    );
-    const data = await res.json();
-    return data.results;
-  };
+  // Get current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = apiData.slice(indexOfFirstPost, indexOfLastPost);
 
-  const fetchData = async () => {
-    const moviesFormServer = await fetchMovies();
+  // Change page
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    setItems([...items, ...moviesFormServer]);
-    if (moviesFormServer.length === 0 || moviesFormServer.length < 5) {
-      sethasMore(false);
-    }
-    setpage(page + 1);
-  };
-
-  const renderedPosts = items.map((post) => (
-    <article key={post.id} className='m-6'>
+  const renderedPosts = currentPosts.map((post) => (
+    <article key={post.id}>
       <div>
         <div className="bg-gray-400  px-3  lg:px-6 lg:py-4 rounded-tl-3xl rounded-tr-3xl">
           <img
@@ -83,22 +73,15 @@ function LazyLoading() {
             <div className="grid sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-1 gap-8">
               <div>
                 <div className="md:w-1/2 m-auto grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-1 gap-8">
-                  <InfiniteScroll
-                    dataLength={items.length} 
-                    next={fetchData}
-                    hasMore={hasMore}
-                    loader={<h4>Loading...</h4>}
-                    endMessage={
-                      <p style={{ textAlign: "center" }}>
-                        <b>Yay! You have seen it all</b>
-                      </p>
-                    }
-                  >
-                    {renderedPosts}
-                  </InfiniteScroll>
+                  {renderedPosts}
                 </div>
               </div>
             </div>
+            <Pagination
+                  postsPerPage={postsPerPage}
+                  totalPosts={apiData.length}
+                  paginate={paginate}
+                />
           </div>
         </div>
       </div>
@@ -106,4 +89,4 @@ function LazyLoading() {
   );
 }
 
-export default LazyLoading;
+export default PostList;

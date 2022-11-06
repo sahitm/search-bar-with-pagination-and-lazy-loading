@@ -2,7 +2,7 @@ import React from "react";
 import Search from "./components/Search";
 import { Routes, Route, Link } from "react-router-dom";
 import LazyLoading from "./components/LazyLoading";
-import Pagination from "./components/Pagination";
+import PostList from "./components/PostList";
 import "./App.css";
 
 function App() {
@@ -22,7 +22,7 @@ function App() {
       <Search />
       <Routes>
         <Route exact path="/" element={<LazyLoading />} />
-        <Route exact path="/pagination" element={<Pagination />} />
+        <Route exact path="/pagination" element={<PostList />} />
       </Routes>
     </div>
   );

@@ -3,9 +3,7 @@ import { Context } from "../state/context";
 
 function Search() {
  
-  const {query, SetQuery} = useContext(Context);
-
-  console.log(query)
+  const {SetQuery} = useContext(Context);
 
   return (
     <>
